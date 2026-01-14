@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #vid1 {
+            width: 100vw;
+            height: 100vh;
+            background-color: #acc38b;
+        }
+        /* Change all text and icon colors in the player. */
+.vjs-matrix.video-js {
+  color: #00ff00;
+}
+
+/* Change the border of the big play button. */
+.vjs-matrix .vjs-big-play-button {
+  border-color: #00ff00;
+}
+
+/* Change the color of various "bars". */
+.vjs-matrix .vjs-volume-level,
+.vjs-matrix .vjs-play-progress,
+.vjs-matrix .vjs-slider-bar {
+  background: #00ff00;
+}
+    </style>
+</head>
+
+<body>
+
+    <video id="vid1" class="video-js vjs-matrix">
+        <source src="https://lsstream.luckyshort.com/lsv/78c0dfd5-214f-4f7c-9666-9a892a868ecf/stream/v.m3u8">
+    </video>
+
+    <script type="module" src="./src/index.js"></script>
+</body>
+
+</html>
