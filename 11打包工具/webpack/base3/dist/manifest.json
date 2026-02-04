@@ -1,5 +1,6 @@
 {
-  "index.js": "index.bundle.js",
-  "print.js": "print.bundle.js",
+  "main.js": "main.js",
+  "mf_remote.js": "remoteEntry.js",
+  "src_print_js.js": "src_print_js.js",
   "index.html": "index.html"
 }

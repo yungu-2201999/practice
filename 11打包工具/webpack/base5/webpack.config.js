@@ -1,57 +1,46 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
-
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 
 module.exports = {
-    entry: {
-        index: './src/index.js',
-        print: './src/print.js',
-    },
+    mode: 'development',
+    entry: './src/index.js',
     output: {
-        filename: '[name].[contenthash].js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
         clean: true,
+        publicPath: 'auto',
     },
-    optimization: {
-        runtimeChunk: 'single',
+    devServer: {
+        static: path.resolve(__dirname, 'dist'),
+        port: 3000,
     },
     module: {
         rules: [
             {
                 test: /.scss$/i,
                 use: [
-                    process.env.NODE_ENV !== 'production'
-                        ? 'style-loader'
-                        : MiniCssExtractPlugin.loader,
-                    , 'css-loader', 'sass-loader']
+                    // 开发模式直接使用 style-loader 注入样式
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader',
+                ],
             },
-            {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                type: 'asset/resource',
-            },
-
-        ]
+        ],
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Caching',
-            minify: {
-                collapseWhitespace: true,          // 折叠空白字符
-                removeComments: true,              // 移除注释
-                removeRedundantAttributes: true,   // 移除冗余属性
-                removeScriptTypeAttributes: true,  // 移除script的type属性
-                removeStyleLinkTypeAttributes: true, // 移除style/link的type属性
-                useShortDoctype: true              // 使用短的doctype
+        new ModuleFederationPlugin({
+            // Host 应用名称
+            name: 'mf_host',
+            // 远程应用定义
+            remotes: {
+                mf_remote: 'mf_remote@http://localhost:3001/remoteEntry.js',
             },
-            cache: true,                         // 仅在文件更改时重新生成
-            hash: false,
         }),
-        new WebpackManifestPlugin(/* options */)
+        new HtmlWebpackPlugin({
+            title: 'Module Federation Host',
+        }),
+        new WebpackManifestPlugin(),
     ],
-    optimization: {
-        splitChunks: {
-            chunks: 'all',
-        },
-    },
 };
